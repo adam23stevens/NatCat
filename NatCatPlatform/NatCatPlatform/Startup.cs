@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore;
+using NatCat.Platform.Data.Context;
 
 namespace NatCatPlatform
 {
@@ -24,6 +26,10 @@ namespace NatCatPlatform
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            services.AddDbContext<NatCatPlatformContext>(options =>
+                    options.UseSqlite(Configuration.GetConnectionString("NatCatPlatformContext")
+                    , b => b.MigrationsAssembly("NatCat.Platform.Data")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
